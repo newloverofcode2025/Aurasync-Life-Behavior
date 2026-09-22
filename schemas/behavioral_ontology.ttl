@@ -1,0 +1,82 @@
+@prefix : <https://w3id.org/aurasync/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+<https://w3id.org/aurasync/ontology>
+    a owl:Ontology ;
+    dc:title "Behavioral & Lifecycle Synthesis Ontology (BLSO)" ;
+    dc:description "A formal OWL ontology for modeling longitudinal human behavior, affective trajectories, relational spheres, struggles, habit cascades, and gender expression dynamics." ;
+    owl:versionInfo "1.0.0" .
+
+### Classes
+
+:HumanAgent a owl:Class ;
+    rdfs:label "Human Agent" ;
+    rdfs:comment "The individual experiencing and authoring the behavioral longitudinal dataset." .
+
+:BehavioralSnapshot a owl:Class ;
+    rdfs:label "Behavioral Snapshot" ;
+    rdfs:comment "A multi-dimensional temporal capture of affect, cognitive load, and environmental context." .
+
+:AffectState a owl:Class ;
+    rdfs:label "Affective State" ;
+    rdfs:comment "Valence and physiological arousal dimensions defining the individual's emotional state." .
+
+:LifeDomain a owl:Class ;
+    rdfs:label "Life Domain" ;
+    rdfs:comment "Categorical sphere of human experience (e.g. Work, Dating, Family, Personal, Lifecycle)." .
+
+:WorkDomain a owl:Class ;
+    rdfs:subClassOf :LifeDomain .
+
+:DatingDomain a owl:Class ;
+    rdfs:subClassOf :LifeDomain .
+
+:FamilyDomain a owl:Class ;
+    rdfs:subClassOf :LifeDomain .
+
+:GenderExpressionPattern a owl:Class ;
+    rdfs:subClassOf :LifeDomain ;
+    rdfs:label "Gender Expression Pattern" ;
+    rdfs:comment "The external presentation, felt authenticity, and social energy associated with gender identity and interpersonal roles." .
+
+:StruggleEpisode a owl:Class ;
+    rdfs:label "Struggle Episode" ;
+    rdfs:comment "A friction point, emotional obstacle, or cognitive challenge." .
+
+:HabitStack a owl:Class ;
+    rdfs:label "Habit Stack" ;
+    rdfs:comment "A routine or sequence of deliberate behaviors performed to preserve physical, cognitive, or relational equilibrium." .
+
+:CausalInference a owl:Class ;
+    rdfs:label "Causal Inference" ;
+    rdfs:comment "A statistically derived or LLM-synthesized relationship connecting triggers to behavioral outcomes." .
+
+### Properties
+
+:hasValence a owl:DatatypeProperty ;
+    rdfs:domain :AffectState ;
+    rdfs:range xsd:float .
+
+:hasArousal a owl:DatatypeProperty ;
+    rdfs:domain :AffectState ;
+    rdfs:range xsd:float .
+
+:authenticityScore a owl:DatatypeProperty ;
+    rdfs:domain :GenderExpressionPattern ;
+    rdfs:range xsd:float .
+
+:triggersStruggle a owl:ObjectProperty ;
+    rdfs:domain :LifeDomain ;
+    rdfs:range :StruggleEpisode .
+
+:buffersAffect a owl:ObjectProperty ;
+    rdfs:domain :HabitStack ;
+    rdfs:range :AffectState .
+
+:hasInferredCausality a owl:ObjectProperty ;
+    rdfs:domain :BehavioralSnapshot ;
+    rdfs:range :CausalInference .

@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Web Gateway & Interactive Client (Node.js + React + Express)
+  web-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aurasync-web-gateway
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ML_SERVICE_URL=http://ml-engine:8000
+      - REDIS_URL=redis://redis-cache:6379
+      - DATABASE_URL=postgres://aurasync_user:aurasync_pass@timescaledb:5432/behavioral_vault
+    depends_on:
+      - ml-engine
+      - redis-cache
+      - timescaledb
+    networks:
+      - aurasync-mesh
+
+  # Python Machine Learning & Behavioral Trajectory Microservice (FastAPI + PyTorch)
+  ml-engine:
+    build:
+      context: ./services/ml_engine
+      dockerfile: Dockerfile
+    container_name: aurasync-ml-engine
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=8000
+    networks:
+      - aurasync-mesh
+
+  # High-throughput in-memory cache for rate-limiting and temporary telemetry
+  redis-cache:
+    image: redis:7-alpine
+    container_name: aurasync-redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - aurasync-mesh
+
+  # Relational & Time-Series Persistent Storage for encrypted client payloads
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: aurasync-timescaledb
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=aurasync_user
+      - POSTGRES_PASSWORD=aurasync_pass
+      - POSTGRES_DB=behavioral_vault
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - aurasync-mesh
+
+networks:
+  aurasync-mesh:
+    driver: bridge
+
+volumes:
+  redis-data:
+  pgdata:

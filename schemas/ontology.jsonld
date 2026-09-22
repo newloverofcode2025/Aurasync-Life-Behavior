@@ -1,0 +1,40 @@
+{
+  "@context": {
+    "blso": "https://w3id.org/aurasync/ontology#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "id": "@id",
+    "type": "@type",
+    "valence": {
+      "@id": "blso:hasValence",
+      "@type": "xsd:float"
+    },
+    "arousal": {
+      "@id": "blso:hasArousal",
+      "@type": "xsd:float"
+    },
+    "primaryEmotion": "blso:primaryEmotion",
+    "timestamp": {
+      "@id": "blso:timestamp",
+      "@type": "xsd:dateTime"
+    },
+    "lifeDomain": {
+      "@id": "blso:lifeDomain",
+      "@type": "@id"
+    },
+    "genderAuthenticity": {
+      "@id": "blso:authenticityScore",
+      "@type": "xsd:float"
+    },
+    "habitImpact": {
+      "@id": "blso:habitImpact",
+      "@type": "xsd:float"
+    }
+  },
+  "@graph": [
+    {
+      "id": "blso:BehavioralSnapshot",
+      "type": "rdfs:Class",
+      "rdfs:comment": "Interoperable, cryptographic zero-knowledge behavioral snapshot."
+    }
+  ]
+}

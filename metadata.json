@@ -1,0 +1,6 @@
+{
+  "name": "Behavioral & Lifecycle Synthesizer",
+  "description": "End-to-end encrypted multi-dimensional tracker and AI pattern synthesis engine analyzing moods, habits, struggles, behavioral patterns, gender dynamics, and lifecycle transitions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

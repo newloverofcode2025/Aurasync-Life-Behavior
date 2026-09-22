@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aurasync-prod
+  labels:
+    app.kubernetes.io/name: aurasync
+    app.kubernetes.io/part-of: behavioral-synthesizer
+    environment: production
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aurasync-config
+  namespace: aurasync-prod
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+  ML_SERVICE_URL: "http://aurasync-ml-service:8000"
+  REDIS_URL: "redis://aurasync-redis-service:6379"
+  CRYPTO_ITERATIONS: "100000"
+  CRYPTO_CIPHER: "AES-256-GCM"
